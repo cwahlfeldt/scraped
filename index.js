@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 //
 // invoke an async iffe 
 (async ([
@@ -10,6 +12,8 @@
 
     const PORT = 3000
     const URL = `http://www.classic-motorcycle-build.com`
+
+    console.log(`${process.argv[2]}`)
 
     // init with the homepage
     const page = await axios.get(URL)
@@ -41,7 +45,7 @@
     console.log(Object.keys(routes))
 
     // init the index and listen on 3000 for development
-    app.get('/', (req, res) => res.send( page['index'] ))
+    app.get('/', (req, res) => res.send( page[0] ))
     app.listen(PORT, () => console.log( `check it on http://localhost:${PORT}` ))
 
   } catch (error) { // catch any errors
