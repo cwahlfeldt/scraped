@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-
-//
-// invoke an async iffe 
 (async ([
   url,
   app,
@@ -11,17 +8,13 @@
   try { // * main code
 
     const PORT = 3000
-    const URL = `http://www.classic-motorcycle-build.com`
-
-    console.log(`${process.argv[2]}`)
+    const URL = process.argv[2] || `http://www.classic-motorcycle-build.com`
 
     // init with the homepage
     const page = await axios.get(URL)
     const $ = await cheerio.load(page.data)
     const nav = $('nav a')
     let routes = {}
-
-    // register home and use it to init all routes
 
     // register routes for main nav -- this works because we are in an async iffe :)
     for (let i = 0; i < nav.length; i++) {
@@ -42,10 +35,12 @@
       app.get(path, (req, res) => res.send( data.html() ))
     }
 
+    // route keys =
+    console.log(URL)
     console.log(Object.keys(routes))
 
     // init the index and listen on 3000 for development
-    app.get('/', (req, res) => res.send( page[0] ))
+    app.get('/', (req, res) => res.send( page['index'] ))
     app.listen(PORT, () => console.log( `check it on http://localhost:${PORT}` ))
 
   } catch (error) { // catch any errors
